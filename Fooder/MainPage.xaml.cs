@@ -36,19 +36,5 @@ namespace Fooder
                 App.IngredientsViewModelInstance.LoadData();
             }
         }
-
-      /*  private void MainListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // If selected index is -1 (no selection) do nothing
-            if (IngredientsList.SelectedIndex == -1)
-                return;
-
-            // Navigate to the new page
-            NavigationService.Navigate(new Uri("/DetailsPage.xaml?selectedItem=" + MainListBox.SelectedIndex, UriKind.Relative));
-
-            // Reset selected index to -1 (no selection)
-            IngredientsList.SelectedIndex = -1;
-        }*/
-
     }
 }

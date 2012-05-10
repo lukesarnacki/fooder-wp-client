@@ -94,8 +94,8 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\IngredientDetailsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\IngredientView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -117,7 +117,9 @@
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\camera.png" />
+    <Content Include="Images\camera.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup />
