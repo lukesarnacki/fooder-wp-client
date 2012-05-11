@@ -36,5 +36,11 @@ namespace Fooder
                 App.IngredientsViewModelInstance.LoadData();
             }
         }
+
+        private void ApplicationBarIconButton_Click(object sender, EventArgs e)
+        {
+            PhoneApplicationFrame root = Application.Current.RootVisual as PhoneApplicationFrame;
+            root.Navigate(new Uri("/Views/Camera.xaml", UriKind.Relative));
+        }
     }
 }
