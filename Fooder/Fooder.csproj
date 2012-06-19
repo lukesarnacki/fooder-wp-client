@@ -64,6 +64,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BitmapImageConverter.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -75,14 +76,14 @@
     <Compile Include="ViewModels\ProductsViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="Views\Camera.xaml.cs">
-      <DependentUpon>Camera.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\IngredientDetailsPage.xaml.cs">
       <DependentUpon>IngredientDetailsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\IngredientView.xaml.cs">
       <DependentUpon>IngredientView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProductDetailsPage.xaml.cs">
+      <DependentUpon>ProductDetailsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProductView.xaml.cs">
       <DependentUpon>ProductView.xaml</DependentUpon>
@@ -97,10 +98,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Camera.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\IngredientDetailsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -108,6 +105,10 @@
     <Page Include="Views\IngredientView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ProductDetailsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProductView.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -20,11 +20,12 @@
         <!--Pivot Control-->
         <controls:Pivot Title="FOODER">
             <!--Pivot item one-->
+            <!--
             <controls:PivotItem Header="prodkty">
-                <!--Double line list with text wrapping-->
                 <views:ProductView x:Name="ProductsView" Height="532"/>
             </controls:PivotItem>
- 
+            -->
+        
             <!--Pivot item two-->
             <controls:PivotItem Header="składniki"> 
                 <!--Triple line list no text wrapping-->

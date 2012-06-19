@@ -13,6 +13,7 @@ namespace Fooder.Models
 {
     public class Product
     {
+        public System.Collections.ICollection ingredientIds;
         public String Name { get; set; }
         public String Description { get; set; }
     }

@@ -11,20 +11,25 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
+using Fooder.Models;
+using Microsoft.Phone.Shell;
+using System.Windows.Data;
 
 namespace Fooder.Views
 {
     public partial class IngredientView : UserControl
     {
+        App thisApp = Application.Current as App;
+
         public IngredientView()
         {
             InitializeComponent();
             DataContext = App.IngredientsViewModelInstance;
         }
 
-        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
-        {
 
+        private void IngredientView_Loaded(object sender, RoutedEventArgs e)
+        {
         }
 
 
@@ -34,11 +39,17 @@ namespace Fooder.Views
             if (IngredientsList.SelectedIndex == -1)
                 return;
 
+            thisApp.ActiveIngredient = IngredientsList.SelectedItem as Ingredient;
+
             // Navigate to the new page
-            (Application.Current.RootVisual as PhoneApplicationFrame).Navigate(new Uri("/Views/IngredientDetailsPage.xaml?selectedItem=" + IngredientsList.SelectedIndex, UriKind.Relative));
+            (Application.Current.RootVisual as PhoneApplicationFrame).Navigate(new Uri("/Views/IngredientDetailsPage.xaml", UriKind.Relative));
 
             // Reset selected index to -1 (no selection)
             IngredientsList.SelectedIndex = -1;
+        }
+
+        private void IngredientsList_Loaded(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

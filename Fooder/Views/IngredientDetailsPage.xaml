@@ -23,12 +23,41 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock x:Name="PageTitle" Text="FOODER" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="ListTitle" Text="{Binding Name}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="Number" Text="{Binding Number}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="Name" Text="{Binding Name}" TextWrapping="Wrap" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
         </StackPanel>
 
         <!--ContentPanel contains details text. Place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <TextBlock x:Name="ContentText" Text="{Binding Description}" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <ScrollViewer >
+                <StackPanel Margin="12,0,0,0">
+                
+                    <TextBlock x:Name="DescriptionTitle" Margin="0,10,0,5" Text="Funkcje i charakterystyka" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}" FontWeight="Bold" FontSize="22"/>
+                    <TextBlock x:Name="DescriptionText" Margin="12,0,0,0" Text="{Binding Description}" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}"/>
+
+                    <TextBlock x:Name="OriginTitle" Margin="0,5,0,5" Text="Pochodzenie" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}" FontWeight="Bold" FontSize="22"/>
+                    <TextBlock x:Name="OriginText" Margin="12,0,0,0" Text="{Binding Origin}" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}"/>
+
+                    <TextBlock x:Name="ProductsTypeTitle" Margin="0,10,0,5" Text="Typy produktów" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}" FontWeight="Bold" FontSize="22"/>
+                    <TextBlock x:Name="ProductsTypeText" Margin="12,0,0,0" Text="{Binding ProductsType}" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}"/>
+
+                    <TextBlock x:Name="DailyIntakTitle" Margin="0,10,0,5" Text="Dopuszczalne dzienne spożycie" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}" FontWeight="Bold" FontSize="22"/>
+                    <TextBlock x:Name="DailyIntakeText" Margin="12,0,0,0" Text="{Binding DailyIntake}" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}"/>
+
+                    <TextBlock x:Name="SideEffectsTitle" Margin="0,10,0,5" Text="Efekty uboczne" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}" FontWeight="Bold" FontSize="22"/>
+                    <TextBlock x:Name="SideEffectsText" Margin="12,0,0,0" Text="{Binding SideEffects}" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}"/>
+
+                    <TextBlock x:Name="DietaryRestrictionsTitle" Margin="0,10,0,5" Text="Ograniczenia żywieniowe" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}" FontWeight="Bold" FontSize="22"/>
+                    <TextBlock x:Name="DietaryRestrictionsText" Margin="12,0,0,0" Text="{Binding DietaryRestrictions}" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}"/>
+
+                    
+                    
+                    <Border BorderBrush="{StaticResource PhoneForegroundBrush}" BorderThickness="0,0,0,2" Height="2" Margin="0,30,0,5"/>
+                    <TextBlock x:Name="FoodInfoText"  Text="Dane pobrane ze strony:" TextWrapping="Wrap" Style="{StaticResource PhoneTextNormalStyle}"/>
+                    <HyperlinkButton Content="food-info.net" NavigateUri="http://food-info.net" TargetName="_blank" Margin="0,0,0,20" HorizontalAlignment="Left" FontSize="20"/>
+                    
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Grid>
  

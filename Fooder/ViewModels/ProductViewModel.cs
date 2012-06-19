@@ -10,6 +10,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
 using System.ComponentModel;
+using Fooder.Models;
+using System.Collections.ObjectModel;
 
 namespace Fooder.ViewModels
 {
@@ -40,6 +42,19 @@ namespace Fooder.ViewModels
                 _description = value;
                 NotifyPropertyChanged("Description");
             }
+        }
+
+        public ObservableCollection<Ingredient> Items { get; private set; }
+
+        public void LoadIngredients(ObservableCollection<Ingredient> ingredients)
+        {
+            Items = ingredients;
+        }
+
+        public void Load(Product product)
+        {
+            Name = product.Name;
+            Description = product.Description;
         }
     }
 }

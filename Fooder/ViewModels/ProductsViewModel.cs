@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using System.Xml.Linq;
+using Fooder.Models;
 
 namespace Fooder.ViewModels
 {
@@ -25,7 +26,7 @@ namespace Fooder.ViewModels
         WebClient remoteXml;
         public ProductsViewModel()
         {
-            this.Items = new ObservableCollection<ProductViewModel>();
+            this.Items = new ObservableCollection<Product>();
             remoteXml = new WebClient();
             remoteXml.DownloadStringCompleted += new DownloadStringCompletedEventHandler(remoteXml_DownloadStringCompleted);
         }
@@ -33,7 +34,7 @@ namespace Fooder.ViewModels
         /// <summary>
         /// A collection for ItemViewModel objects.
         /// </summary>
-        public ObservableCollection<ProductViewModel> Items { get; private set; }
+        public ObservableCollection<Product> Items { get; private set; }
 
         public bool IsDataLoaded
         {
@@ -46,7 +47,7 @@ namespace Fooder.ViewModels
         /// </summary>
         public void LoadData()
         {
-            String txtUri = "http://localhost.:3000/products.xml";
+            String txtUri = "http://fooder.herokuapp.com/products.xml";
             txtUri = Uri.EscapeUriString(txtUri); 
             Uri uri = new Uri(txtUri, UriKind.Absolute); 
             remoteXml.DownloadStringAsync(uri);
@@ -63,14 +64,14 @@ namespace Fooder.ViewModels
 
             XDocument xdoc = XDocument.Parse(e.Result);
 
-            List<ProductViewModel> products;
+            List<Product> products;
 
             products = (from item in xdoc.Descendants("object")
-                        select new ProductViewModel()
+                        select new Product()
                         {
                             Name = item.Element("name").Value,
                             Description = item.Element("description").Value
-                        }).ToList();
+                        }).ToList();         
 
             foreach (var product in products)
             {

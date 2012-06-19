@@ -16,16 +16,20 @@ using System.Collections.Generic;
 using System.Linq;
 
 using System.Xml.Linq;
+using Fooder.Models;
 
 namespace Fooder.ViewModels
 {
     public class IngredientsViewModel : ViewModelBase
     {
         WebClient remoteXml;
+
         public IngredientsViewModel()
         {
             // Insert code required on object creation below this point.
-            this.Items = new ObservableCollection<IngredientViewModel>();
+            this.Items = new ObservableCollection<Ingredient>();
+
+            this.ProgressBarVisibility = "Visible";
 
             remoteXml = new WebClient();
             remoteXml.DownloadStringCompleted += new DownloadStringCompletedEventHandler(remoteXml_DownloadStringCompleted);
@@ -34,7 +38,7 @@ namespace Fooder.ViewModels
         /// <summary>
         /// A collection for ItemViewModel objects.
         /// </summary>
-        public ObservableCollection<IngredientViewModel> Items { get; private set; }
+        public ObservableCollection<Ingredient> Items { get; private set; }
 
         public bool IsDataLoaded
         {
@@ -42,17 +46,28 @@ namespace Fooder.ViewModels
             private set;
         }
 
+        private String _progressBarVisibility;
+        public String ProgressBarVisibility
+        {
+            get
+            {
+                return _progressBarVisibility;
+            }
+            set {
+                _progressBarVisibility = value;
+                NotifyPropertyChanged("ProgressBarVisibility");
+            }
+        }
+
         /// <summary>
         /// Creates and adds a few MyTaskItemViewModel objects into the Items collection.
         /// </summary>
         public void LoadData()
         {
-            String txtUri = "http://localhost.:3000/ingredients.xml";
+            String txtUri = "http://fooder.herokuapp.com/ingredients.xml";
             txtUri = Uri.EscapeUriString(txtUri);
             Uri uri = new Uri(txtUri, UriKind.Absolute);
             remoteXml.DownloadStringAsync(uri);
-
-            this.IsDataLoaded = true;
         }
 
         private void remoteXml_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
@@ -62,13 +77,20 @@ namespace Fooder.ViewModels
 
             XDocument xdoc = XDocument.Parse(e.Result);
 
-            List<IngredientViewModel> ingredients;
+            List<Ingredient> ingredients;
 
             ingredients = (from item in xdoc.Descendants("object")
-                        select new IngredientViewModel()
+                        select new Ingredient()
                         {
+                            ID = item.Element("id").Value,
                             Name = item.Element("name").Value,
-                            Description = item.Element("description").Value
+                            Number = item.Element("number").Value,
+                            Description = (string) item.Element("description") ?? "Brak danych.",
+                            Origin = (string)item.Element("origin") ?? "Brak danych.",
+                            ProductsType = (string)item.Element("products-type") ?? "Brak danych.",
+                            DailyIntake = (string)item.Element("daily-intake") ?? "Brak danych.",
+                            SideEffects = (string)item.Element("side-effects") ?? "Brak danych.",
+                            DietaryRestrictions = (string)item.Element("dietary-restrictions") ?? "Brak danych."
                         }).ToList();
 
 
@@ -76,6 +98,10 @@ namespace Fooder.ViewModels
             {
                 this.Items.Add(ingredient);
             }
+            //IEnumerable<Ingredient> matches = Items.Where(p => p.Name == "");
+
+            this.ProgressBarVisibility = "Collapsed";
+            
         }
     }
 }

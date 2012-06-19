@@ -16,6 +16,8 @@ namespace Fooder.Views
 {
     public partial class IngredientDetailsPage : PhoneApplicationPage
     {
+        ViewModels.IngredientViewModel view = new ViewModels.IngredientViewModel();
+
         public IngredientDetailsPage()
         {
             InitializeComponent();
@@ -23,12 +25,9 @@ namespace Fooder.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            string selectedIndex = "";
-            if (NavigationContext.QueryString.TryGetValue("selectedItem", out selectedIndex))
-            {
-                int index = int.Parse(selectedIndex);
-                DataContext = App.IngredientsViewModelInstance.Items[index];
-            }
+            App thisApp = Application.Current as App;
+            view.Load(thisApp.ActiveIngredient);
+            DataContext = view;
         }
     }
 }

@@ -12,11 +12,16 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Fooder.Models;
 
 namespace Fooder
 {
     public partial class App : Application
     {
+        public Ingredient ActiveIngredient;
+        public Product ActiveProduct;
+
+
         private static ViewModels.ProductsViewModel productsViewModel = null;
         /// <summary>
         /// A static ViewModel used by the views to bind against.
