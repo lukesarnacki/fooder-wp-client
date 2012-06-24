@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Fooder.Models;
+using System.Collections.ObjectModel;
 
 namespace Fooder
 {
@@ -20,6 +21,9 @@ namespace Fooder
     {
         public Ingredient ActiveIngredient;
         public Product ActiveProduct;
+        public ObservableCollection<Ingredient> Ingredients = new ObservableCollection<Ingredient>();
+        public List<Int16> IngredientIds;
+        public Boolean FilterIds;
 
 
         private static ViewModels.ProductsViewModel productsViewModel = null;

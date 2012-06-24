@@ -14,6 +14,10 @@ using Microsoft.Phone.Controls;
 using Fooder.Models;
 using Microsoft.Phone.Shell;
 using System.Windows.Data;
+using System.Text.RegularExpressions;
+
+
+using System.Xml.Linq;
 
 namespace Fooder.Views
 {
@@ -50,6 +54,21 @@ namespace Fooder.Views
 
         private void IngredientsList_Loaded(object sender, RoutedEventArgs e)
         {
+        }
+
+        private void searchBox_Focus(object sender, RoutedEventArgs e)
+        {
+            searchBox.Text = String.Empty;
+        }
+
+        private void searchButton_Click(object sender, RoutedEventArgs e)
+        {
+            App.IngredientsViewModelInstance.Filter(searchBox.Text);
+        }
+
+        private void backButton_Click(object sender, RoutedEventArgs e)
+        {
+            App.IngredientsViewModelInstance.CancelFilter();
         }
     }
 }

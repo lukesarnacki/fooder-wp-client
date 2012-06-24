@@ -24,7 +24,7 @@ namespace Fooder
         CameraCaptureTask cameraCaptureTask;
         PhotoChooserTask photoChooserTask;
         private WebClient myWebClient = new WebClient();
-
+        App thisApp = Application.Current as App;
 
         // Constructor
         public MainPage()
@@ -43,10 +43,10 @@ namespace Fooder
         // Load data for the ViewModel Items
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!App.ProductsViewModelInstance.IsDataLoaded)
+            /*if (!App.ProductsViewModelInstance.IsDataLoaded)
             {
                 App.ProductsViewModelInstance.LoadData();
-            }
+            }*/
 
             if (!App.IngredientsViewModelInstance.IsDataLoaded)
             {
@@ -87,6 +87,10 @@ namespace Fooder
         string Image = null;
         void cameraCaptureTask_Completed(object sender, PhotoResult e)
         {
+
+            App.IngredientsViewModelInstance.ProgressBarVisibility = "Visible";
+            App.IngredientsViewModelInstance.IngredientsListVisibility = "Collapsed";
+
             if (e.TaskResult == TaskResult.OK)
             {
                 //Code to display the photo on the page in an image control named myImage.
@@ -94,10 +98,9 @@ namespace Fooder
                 bmp.SetSource(e.ChosenPhoto);
 
                 Image = Convert.ToBase64String(BitmapImageConverter.ConvertToBytes(bmp));
-                Debug.WriteLine(Image);
 
 
-                var url = "http://fooder.herokuapp.com/labels.xml";
+                var url = "http://fooder.developers.stoliczku.pl/labels.xml";
                 //url = "http://posttestserver.com/post.php";
 
                 // Create the web request object
@@ -113,7 +116,7 @@ namespace Fooder
 
         void myWebClient_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
-            MessageBox.Show(e.Result);
+
         }
 
         void GetRequestStreamCallback(IAsyncResult asynchronousResult)
@@ -143,7 +146,19 @@ namespace Fooder
                 HttpWebResponse response;
 
                 // End the get response operation
-                response = (HttpWebResponse)webRequest.EndGetResponse(asynchronousResult);
+
+                try
+                {
+                    response = (HttpWebResponse)webRequest.EndGetResponse(asynchronousResult);
+                }
+                catch (WebException e)
+                {
+                    Dispatcher.BeginInvoke(() => MessageBox.Show("Wystąpił błąd, spróbuj ponownie"));
+                    Dispatcher.BeginInvoke(() => App.IngredientsViewModelInstance.ProgressBarVisibility = "Collapsed");
+                    Dispatcher.BeginInvoke(() => App.IngredientsViewModelInstance.IngredientsListVisibility = "Visible");
+                    return;
+                }
+
                 Stream streamResponse = response.GetResponseStream();
                 StreamReader streamReader = new StreamReader(streamResponse);
                 var Response = streamReader.ReadToEnd();
@@ -151,8 +166,28 @@ namespace Fooder
                 streamReader.Close();
                 response.Close();
 
-                //XDocument xdoc = XDocument.Parse(Response);
+                XDocument xdoc = XDocument.Parse(Response);
+
+                var ids = (from item in xdoc.Descendants("ingredient-id")
+                          select item.Value);
+
+                List<Int16> IngredientIds = new List<Int16>();
+                foreach (var i in ids) IngredientIds.Add(Convert.ToInt16(i));
+
                 Debug.WriteLine(Response);
+
+                Dispatcher.BeginInvoke(() => App.IngredientsViewModelInstance.FilterIds(IngredientIds));
+        }
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            if (thisApp.FilterIds)
+            {
+                thisApp.FilterIds = false;
+                App.IngredientsViewModelInstance.CancelFilter();
+                e.Cancel = true;
+            }
+            
         }
     }
 }

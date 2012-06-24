@@ -21,6 +21,6 @@ namespace Fooder.Models
         public String ProductsType { get; set; }
         public String SideEffects { get; set; }
         public String DailyIntake { get; set; }
-        public String ID { get; set; }
+        public Int16 ID { get; set; }
     }
 }

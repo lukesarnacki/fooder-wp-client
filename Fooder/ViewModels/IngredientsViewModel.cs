@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Windows.Data;
 
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace Fooder.ViewModels
     public class IngredientsViewModel : ViewModelBase
     {
         WebClient remoteXml;
+        App thisApp = Application.Current as App;
 
         public IngredientsViewModel()
         {
@@ -34,6 +36,39 @@ namespace Fooder.ViewModels
             remoteXml = new WebClient();
             remoteXml.DownloadStringCompleted += new DownloadStringCompletedEventHandler(remoteXml_DownloadStringCompleted);
         }
+
+
+        private ObservableCollection<Ingredient> _ingredients;
+
+        private CollectionViewSource _ingredientsView;
+        public CollectionViewSource IngredientsView
+        {
+            get
+            {
+                if (null == _ingredientsView)
+                {
+                    _ingredientsView = new CollectionViewSource();
+                    //_riversView.Filter += FilterRiversView;
+                }
+                //System.deb_ingredientsView.View.CurrentItem;
+                return _ingredientsView;
+            }
+        }
+
+        public ObservableCollection<Ingredient> Ingredients
+        {
+            get { return _ingredients; }
+            set
+            {
+                if (_ingredients != value)
+                {
+                    _ingredients = value;
+                    NotifyPropertyChanged("Ingredients");
+                    this.IngredientsView.Source = _ingredients;
+                }
+            }
+        }
+ 
 
         /// <summary>
         /// A collection for ItemViewModel objects.
@@ -59,12 +94,54 @@ namespace Fooder.ViewModels
             }
         }
 
+        private String _ingredientsListVisibility = "Visible";
+        public String IngredientsListVisibility
+        {
+            get
+            {
+                return _ingredientsListVisibility;
+            }
+            set
+            {
+                _ingredientsListVisibility = value;
+                NotifyPropertyChanged("IngredientsListVisibility");
+            }
+        }
+
+        private String _searchVisibility = "Visible";
+        public String SearchVisibility
+        {
+            get
+            {
+                return _searchVisibility;
+            }
+            set
+            {
+                _searchVisibility = value;
+                NotifyPropertyChanged("SearchVisibility");
+            }
+        }
+
+        private String _filterTitleVisibility = "Collapsed";
+        public String FilterTitleVisibility
+        {
+            get
+            {
+                return _filterTitleVisibility;
+            }
+            set
+            {
+                _filterTitleVisibility = value;
+                NotifyPropertyChanged("FilterTitleVisibility");
+            }
+        }
+
         /// <summary>
         /// Creates and adds a few MyTaskItemViewModel objects into the Items collection.
         /// </summary>
         public void LoadData()
         {
-            String txtUri = "http://fooder.herokuapp.com/ingredients.xml";
+            String txtUri = "http://fooder.developers.stoliczku.pl/ingredients.xml";
             txtUri = Uri.EscapeUriString(txtUri);
             Uri uri = new Uri(txtUri, UriKind.Absolute);
             remoteXml.DownloadStringAsync(uri);
@@ -82,7 +159,7 @@ namespace Fooder.ViewModels
             ingredients = (from item in xdoc.Descendants("object")
                         select new Ingredient()
                         {
-                            ID = item.Element("id").Value,
+                            ID = Convert.ToInt16(item.Element("id").Value),
                             Name = item.Element("name").Value,
                             Number = item.Element("number").Value,
                             Description = (string) item.Element("description") ?? "Brak danych.",
@@ -98,10 +175,53 @@ namespace Fooder.ViewModels
             {
                 this.Items.Add(ingredient);
             }
-            //IEnumerable<Ingredient> matches = Items.Where(p => p.Name == "");
 
+            this.Ingredients = this.Items;
             this.ProgressBarVisibility = "Collapsed";
             
+        }
+
+        public void Filter(String searchText)
+        {
+
+            this.IngredientsView.View.Filter = r =>
+            {
+                if (null == r) return true;
+                var rm = (Ingredient)r;
+                var meets = rm.Number.ToLowerInvariant().Contains(searchText.ToLowerInvariant())
+                    || rm.Name.ToLowerInvariant().Contains(searchText.ToLowerInvariant());
+                return meets;
+            };
+        }
+
+        public void FilterIds(List<short> ids)
+        {
+
+
+            this.IngredientsView.View.Filter = i =>
+            {
+                if (null == i) return true;
+                var ingredient = (Ingredient)i;
+                var meets = ids.Contains(ingredient.ID);
+                return meets;
+            };
+
+            App.IngredientsViewModelInstance.ProgressBarVisibility = "Collapsed";
+            App.IngredientsViewModelInstance.SearchVisibility = "Collapsed";
+            App.IngredientsViewModelInstance.IngredientsListVisibility = "Visible";
+            App.IngredientsViewModelInstance.FilterTitleVisibility = "Visible";
+            thisApp.FilterIds = true;
+            
+        }
+
+        public void CancelFilter()
+        {
+            this.IngredientsView.View.Filter = i =>
+            {
+                return true;
+            };
+            App.IngredientsViewModelInstance.SearchVisibility = "Visible";
+            App.IngredientsViewModelInstance.FilterTitleVisibility = "Collapsed";
         }
     }
 }

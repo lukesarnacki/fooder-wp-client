@@ -10,8 +10,14 @@
     d:DesignHeight="480" d:DesignWidth="480">
 
     <Grid x:Name="LayoutRoot" Loaded="IngredientView_Loaded">
-        <ProgressBar IsEnabled="false" IsIndeterminate="true" Height="50"  Visibility="{Binding ProgressBarVisibility}"/>
-        <ListBox x:Name="IngredientsList" Margin="0,0,-12,0" ItemsSource="{Binding Items}" SelectionChanged="IngredientsList_SelectionChanged" Loaded="IngredientsList_Loaded">
+
+        <TextBox Height="72" HorizontalAlignment="Left" Margin="8,0,0,0" Name="searchBox" Text="Wpisz nazwę lub numer" VerticalAlignment="Top" Width="330" GotFocus="searchBox_Focus" Visibility="{Binding SearchVisibility}" />
+        <Button Content="Szukaj" Height="72" HorizontalAlignment="Left" Margin="328,0,0,0" Name="searchButton" VerticalAlignment="Top" Width="122" Click="searchButton_Click" Visibility="{Binding SearchVisibility}" />
+        <TextBlock Text="Składniki znalezione na zdjęciu:" TextWrapping="Wrap" Margin="16,10,0,0" Style="{StaticResource PhoneTextLargeStyle}" Visibility="{Binding FilterTitleVisibility}"/>
+        <!--<Button Content="Wróć do listy składników" Height="56" HorizontalAlignment="Left" Margin="10,40,0,0" Name="backButton" VerticalAlignment="Top" Width="250" Click="backButton_Click" Visibility="{Binding FilterTitleVisibility}" FontSize="14"/>-->
+        
+        <ProgressBar IsEnabled="false" IsIndeterminate="true" Height="480"  Visibility="{Binding ProgressBarVisibility}" Width="472" />
+        <ListBox x:Name="IngredientsList" Margin="0,82,-12,0" ItemsSource="{Binding IngredientsView.View}" SelectionChanged="IngredientsList_SelectionChanged" Loaded="IngredientsList_Loaded" IsSynchronizedWithCurrentItem="False" Visibility="{Binding IngredientsListVisibility}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Margin="0,0,0,17">
@@ -21,5 +27,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        
     </Grid>
 </UserControl>
